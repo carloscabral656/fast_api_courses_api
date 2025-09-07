@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import status
-
+from fastapi.responses import JSONResponse
+from fastapi import Response
 from models import Course
 
 app = FastAPI()
@@ -53,6 +54,15 @@ async def update_course(course_id: int , course: Course):
         courses[course_id] = course
         course.id = course_id
         return course
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Couse not found.")
+    
+@app.delete("/courses/{course_id}")
+async def delete_course(course_id: int): 
+    if course_id in courses:
+        del courses[course_id]
+        # return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Couse not found.")
 
