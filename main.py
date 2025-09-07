@@ -46,6 +46,16 @@ async def create_course(course: Course):
     courses[next_id] = course
     return course
 
+
+@app.put("/courses/{course_id}")
+async def update_course(course_id: int , course: Course):
+    if course_id in courses:
+        courses[course_id] = course
+        course.id = course_id
+        return course
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Couse not found.")
+
 if __name__ == '__main__':
     import uvicorn
 
