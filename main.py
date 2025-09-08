@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import status
 from fastapi.responses import JSONResponse
+from fastapi import Path
 from fastapi import Response
 from models import Course
 
@@ -31,7 +32,7 @@ async def get_courses():
     Esse parâmetro é validado também, então se eu defino como um int, quando eu passar uma letra ele vai devolver um erro.
 """
 @app.get("/courses/{course_id}")
-async def get_course_by_id(course_id: int):
+async def get_course_by_id(course_id: int = Path(title="ID do curso", description="Deve ser entre 1 e 2", gt=0, lt=3)):
     ## Todo o input do Python é string, então precsiamos fazer o type cast.
     try:
         course = courses[course_id]
